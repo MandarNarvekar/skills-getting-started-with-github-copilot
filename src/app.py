@@ -3,6 +3,8 @@ High School Management System API
 
 A super simple FastAPI application that allows students to view and sign up
 for extracurricular activities at Mergington High School.
+
+Add more two more sports activities , two more artistic activities and two more academic activities
 """
 
 from fastapi import FastAPI, HTTPException
@@ -38,6 +40,24 @@ activities = {
         "schedule": "Mondays, Wednesdays, Fridays, 2:00 PM - 3:00 PM",
         "max_participants": 30,
         "participants": ["john@mergington.edu", "olivia@mergington.edu"]
+    },
+    "Basketball Team": {
+        "description": "Play competitive basketball games",
+        "schedule": "Tuesdays and Thursdays, 4:00 PM - 5:30 PM",
+        "max_participants": 15,
+        "participants": ["lucas@mergington.edu", "ava@mergington.edu"]
+    },
+    "Drama Club": {
+        "description": "Act in school plays and participate in theatrical productions",
+        "schedule": "Wednesdays, 3:00 PM - 4:30 PM",
+        "max_participants": 25,
+        "participants": ["mia@mergington.edu", "noah@mergington.edu"]
+    },
+    "Math Club": {
+        "description": "Solve challenging math problems and participate in competitions",
+        "schedule": "Fridays, 2:00 PM - 3:30 PM",
+        "max_participants": 20,
+        "participants": ["ethan@mergington.edu", "isabella@mergington.edu"]
     }
 }
 
@@ -61,6 +81,11 @@ def signup_for_activity(activity_name: str, email: str):
 
     # Get the specific activity
     activity = activities[activity_name]
+
+    #Validate activity is not already signed up for
+    if email in activity["participants"]:
+        raise HTTPException(status_code=400, detail="Already signed up for this activity")      
+    
 
     # Add student
     activity["participants"].append(email)
